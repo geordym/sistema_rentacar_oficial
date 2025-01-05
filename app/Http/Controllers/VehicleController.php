@@ -77,6 +77,13 @@ class VehicleController extends Controller
             $vehicle->gearbox = $request->gearbox;
             $vehicle->fuel_type = $request->fuel_type;
             $vehicle->number_of_seats = $request->number_of_seats;
+
+            $vehicle->mark = $request->mark;
+            $vehicle->color = $request->color;
+            $vehicle->number_of_doors = $request->number_doors;
+            $vehicle->state = $request->state;
+
+
             $vehicle->kilometers = $request->kilometers;
             $vehicle->option = !empty($request->option) ? implode(',', $request->option) : null;
             $vehicle->notes = !empty($request->notes) ? $request->notes : null;

@@ -13,6 +13,31 @@
             {{Form::label('model',__('Model'),array('class'=>'form-label')) }}
             {{Form::text('model',null,array('class'=>'form-control','placeholder'=>__('Enter model'),'required'=>'required'))}}
         </div>
+
+        <div class="form-group col-md-6">
+            {{Form::label('mark',__('Mark'),array('class'=>'form-label')) }}
+            {{Form::text('mark',null,array('class'=>'form-control','placeholder'=>__('Enter mark'),'required'=>'required'))}}
+        </div>
+
+        
+        <div class="form-group col-md-6">
+            {{Form::label('color',__('Color'),array('class'=>'form-label')) }}
+            {{Form::text('color',null,array('class'=>'form-control','placeholder'=>__('Enter color'),'required'=>'required'))}}
+        </div>
+
+        <div class="form-group col-md-6">
+            {{Form::label('number_doors',__('number_doors'),array('class'=>'form-label')) }}
+            {{Form::text('number_doors',null,array('class'=>'form-control','placeholder'=>__('Enter the number of doors'),'required'=>'required'))}}
+        </div>
+
+        <div class="form-group col-md-6">
+            {{Form::label('state',__('state'),array('class'=>'form-label')) }}
+            {{Form::text('state',null,array('class'=>'form-control','placeholder'=>__('Enter the state'),'required'=>'required'))}}
+        </div>
+
+
+
+
         <div class="form-group col-md-6">
             {{Form::label('engine_type',__('Engine Type'),array('class'=>'form-label')) }}
             {{Form::text('engine_type',null,array('class'=>'form-control','placeholder'=>__('Enter engine type'),'required'=>'required'))}}

@@ -2,154 +2,86 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lessor;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Validator;
 
 class LessorController extends Controller
 {
     public function index()
     {
-        if (\Auth::user()->can('manage driver')) {
-            $drivers = User::where('parent_id', parentId())->where('type', 'driver')->get();
+        if (\Auth::user()->can('manage lessor')) {
+            $lessors = Lessor::all();
         } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
-        return view('driver.index', compact('drivers'));
+        return view('lessor.index', compact('lessors'));
     }
 
 
     public function newCreate()
     {
-        $gender = User::$gender;
-        return view('driver.new_create', compact('gender'));
+        return view('lessor.new_create');
     }
 
     public function create()
     {
-        $gender = User::$gender;
-        return view('driver.create', compact('gender'));
+        return view('lessor.create');
     }
 
 
     public function store(Request $request)
     {
-
-        if (\Auth::user()->can('create driver')) {
+        // Verifica si el usuario tiene permisos para crear un arrendador
+        if (Auth::user()->can('create lessor')) {
+    
+            // Validación de los datos del formulario
             $validator = \Validator::make(
                 $request->all(),
                 [
-                    'first_name' => 'required',
-                    'last_name' => 'required',
-                    'email' => 'required|email|unique:users',
-                    'phone_number' => 'required|numeric|unique:users',
-                    'gender' => 'required',
-                    'birth_date' => 'required',
-                    'address' => 'required',
-                    'license_number' => 'required',
-                    'issue_date' => 'required',
-                    'expiration_date' => 'required',
-                    'document' => 'required',
-                    'license' => 'required',
+                    'name' => 'required|string',
+                    'document_type' => 'required|string',
+                    'document_number' => 'required|string',
+                    'residence_address' => 'required|string',
+                    'fiscal_address' => 'required|string',
+                    'document_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
                 ]
             );
+    
+            // Si la validación falla, regresa con el error
             if ($validator->fails()) {
                 $messages = $validator->getMessageBag();
                 return redirect()->back()->with('error', $messages->first());
             }
-            if(Carbon::now()->subYears(18)->format('Y-m-d') > $request->birth_date){
-                $drv=new Driver();
-                $drv->birth_date = $request->birth_date;
-            }else{
-                return redirect()->back()->with('error', __('Driver age should not be 18 years old.'));
+    
+            // Crea el arrendador (Lessor)
+            $lessor = new Lessor();
+            $lessor->name = $request->name;
+            $lessor->nationality = $request->nationality;
+            $lessor->document_type = $request->document_type;
+            $lessor->document_number = $request->document_number;
+            $lessor->residence_address = $request->residence_address;
+            $lessor->fiscal_address = $request->fiscal_address;
+
+            $lessor->city = $request->city;
+            $lessor->municipality = $request->municipality;
+            $lessor->license_number = $request->license_number;
+    
+            // Convertir la imagen del documento a base64 si se sube una imagen
+            if ($request->hasFile('document_image')) {
+                $image = $request->file('document_image');
+                $base64Image = base64_encode(file_get_contents($image));
+                $lessor->document_image = $base64Image;
             }
-            $ids = parentId();
-            $authUser = \App\Models\User::find($ids);
-            $totalDriver = $authUser->totalDriver();
-            $subscription = Subscription::find($authUser->subscription);
-            if ($totalDriver >= $subscription->driver_limit && $subscription->driver_limit != 0) {
-                return redirect()->back()->with('error', __('Your driver limit is over, please upgrade your subscription.'));
-            }
-
-            $userRole = Role::where('name', 'driver')->where('parent_id', parentId())->first();
-            $user = new User();
-            $user->name = $request->first_name . ' ' . $request->last_name;
-            $user->email = $request->email;
-            $user->phone_number = !empty($request->phone_number) ? $request->phone_number : null;
-            $user->password = \Hash::make(123456);
-            $user->type = $userRole->name;
-            $user->profile = 'avatar.png';
-            $user->lang = 'english';
-            $user->parent_id = parentId();
-            $user->save();
-            $user->assignRole($userRole);
-
-
-            if (!empty($user)) {
-                $driver = new Driver();
-                $driver->driver_id = $this->driverNumber();
-                $driver->user_id = $user->id;
-                $driver->gender = $request->gender;
-                $driver->age = !empty($request->age) ? $request->age : 0;
-                $driver->address = !empty($request->address) ? $request->address : null;
-                $driver->license_number = !empty($request->license_number) ? $request->license_number : null;
-                $driver->issue_date = !empty($request->issue_date) ? $request->issue_date : null;
-                $driver->expiration_date = !empty($request->expiration_date) ? $request->expiration_date : null;
-                $driver->reference = !empty($request->reference) ? $request->reference : null;
-                $driver->notes = !empty($request->notes) ? $request->notes : null;
-                $driver->parent_id = parentId();
-
-                if (!empty($request->document)) {
-                    $documentFilenameWithExt = $request->file('document')->getClientOriginalName();
-                    $documentFilename = pathinfo($documentFilenameWithExt, PATHINFO_FILENAME);
-                    $documentExtension = $request->file('document')->getClientOriginalExtension();
-                    $documentFileName = $documentFilename . '_' . time() . '.' . $documentExtension;
-
-                    $directory = storage_path('upload/document');
-                    $filePath = $directory . $documentFilenameWithExt;
-                    if (!file_exists($directory)) {
-                        mkdir($directory, 0777, true);
-                    }
-                    $request->file('document')->storeAs('upload/document/', $documentFileName);
-                    $driver->document = $documentFileName;
-                }
-
-                if (!empty($request->license)) {
-                    $licenseFilenameWithExt = $request->file('license')->getClientOriginalName();
-                    $licenseFilename = pathinfo($licenseFilenameWithExt, PATHINFO_FILENAME);
-                    $licenseExtension = $request->file('license')->getClientOriginalExtension();
-                    $licenseFileName = $licenseFilename . '_' . time() . '.' . $licenseExtension;
-
-                    $directory = storage_path('upload/license');
-                    $filePath = $directory . $licenseFilenameWithExt;
-
-                    if (!file_exists($directory)) {
-                        mkdir($directory, 0777, true);
-                    }
-                    $request->file('license')->storeAs('upload/license/', $licenseFileName);
-                    $driver->license = $licenseFileName;
-                }
-
-                $driver->save();
-            }
-            if (isset($request->direct_create)) {
-                if (!empty($driver)) {
-                    $driverList = User::where('type', 'driver')->where('parent_id', parentId())
-                        ->orderBy('created_at', 'desc')
-                        ->get()
-                        ->pluck('name', 'id');
-
-                    $response['status'] = true;
-                    $response['message'] = __('Driver successfully created');
-                    $response['data'] = $driverList;
-                } else {
-                    $response['status'] = false;
-                    $response['message'] = __('Driver created failed');
-                    $response['data'] = [];
-                }
-
-                return json_encode($response);
-            } else {
-                return redirect()->route('driver.index')->with('success', __('Driver successfully created.'));
-            }
+    
+    
+            // Guarda el arrendador en la base de datos
+            $lessor->save();
+    
+            // Retorna con mensaje de éxito
+            return redirect()->route('lessor.index')->with('success', __('Lessor successfully created.'));
         } else {
             return redirect()->back()->with('error', __('Permission Denied.'));
         }
@@ -169,13 +101,8 @@ class LessorController extends Controller
 
     public function edit($id)
     {
-        $user = User::find($id);
-        $name = explode(' ', $user->name);
-        $user->first_name = isset($name[0]) ? $name[0] : null;
-        $user->last_name = isset($name[1]) ? $name[1] : null;
-        $driver = $user->drivers;
-        $gender = User::$gender;
-        return view('driver.edit', compact('driver', 'user', 'gender'));
+        $lessor = Lessor::find($id);
+        return view('lessor.edit', compact('lessor'));
     }
 
 

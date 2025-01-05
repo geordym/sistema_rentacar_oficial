@@ -20,7 +20,9 @@ use App\Http\Controllers\OptionController;
 use App\Http\Controllers\AddonController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\LessorController;
 use App\Http\Controllers\RentalAgreementController;
+use App\Http\Controllers\TenantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,32 +108,32 @@ Route::group(
         ],
     ], function () {
     Route::get('settings/account', [SettingController::class, 'account'])->name('setting.account');
-    Route::post('settings/account', [SettingController::class, 'accountData'])->name('setting.account');
+    Route::post('settings/account', [SettingController::class, 'accountData'])->name('setting.account.data');
     Route::delete('settings/account/delete', [SettingController::class, 'accountDelete'])->name('setting.account.delete');
 
     Route::get('settings/password', [SettingController::class, 'password'])->name('setting.password');
-    Route::post('settings/password', [SettingController::class, 'passwordData'])->name('setting.password');
+    Route::post('settings/password', [SettingController::class, 'passwordData'])->name('setting.password.data');
 
     Route::get('settings/general', [SettingController::class, 'general'])->name('setting.general');
-    Route::post('settings/general', [SettingController::class, 'generalData'])->name('setting.general');
+    Route::post('settings/general', [SettingController::class, 'generalData'])->name('setting.general.data');
 
     Route::get('settings/smtp', [SettingController::class, 'smtp'])->name('setting.smtp');
-    Route::post('settings/smtp', [SettingController::class, 'smtpData'])->name('setting.smtp');
+    Route::post('settings/smtp', [SettingController::class, 'smtpData'])->name('setting.smtp.data');
 
     Route::get('settings/payment', [SettingController::class, 'payment'])->name('setting.payment');
-    Route::post('settings/payment', [SettingController::class, 'paymentData'])->name('setting.payment');
+    Route::post('settings/payment', [SettingController::class, 'paymentData'])->name('setting.payment.data');
 
     Route::get('settings/company', [SettingController::class, 'company'])->name('setting.company');
-    Route::post('settings/company', [SettingController::class, 'companyData'])->name('setting.company');
+    Route::post('settings/company', [SettingController::class, 'companyData'])->name('setting.company.data');
 
     Route::get('language/{lang}', [SettingController::class, 'lanquageChange'])->name('language.change');
     Route::post('theme/settings', [SettingController::class, 'themeSettings'])->name('theme.settings');
 
     Route::get('settings/site-seo', [SettingController::class, 'siteSEO'])->name('setting.site.seo');
-    Route::post('settings/site-seo', [SettingController::class, 'siteSEOData'])->name('setting.site.seo');
+    Route::post('settings/site-seo', [SettingController::class, 'siteSEOData'])->name('setting.site.seo.data');
 
     Route::get('settings/google-recaptcha', [SettingController::class, 'googleRecaptcha'])->name('setting.google.recaptcha');
-    Route::post('settings/google-recaptcha', [SettingController::class, 'googleRecaptchaData'])->name('setting.google.recaptcha');
+    Route::post('settings/google-recaptcha', [SettingController::class, 'googleRecaptchaData'])->name('setting.google.recaptcha.data');
 }
 );
 
@@ -203,6 +205,38 @@ Route::group(
     Route::resource('driver', DriverController::class);
 }
 );
+
+//-------------------------------Tenant-------------------------------------------
+Route::group(
+    [
+        'middleware' => [
+            'auth',
+            'XSS',
+        ],
+    ], function () {
+
+    Route::get('tenant/new/create', [TenantController::class, 'newCreate'])->name('tenant.new.create');
+    Route::resource('tenant', TenantController::class);
+}
+);
+
+//-------------------------------Lessor-------------------------------------------
+Route::group(
+    [
+        'middleware' => [
+            'auth',
+            'XSS',
+        ],
+    ], function () {
+
+    Route::get('lessor/new/create', [LessorController::class, 'newCreate'])->name('lessor.new.create');
+    Route::resource('lessor', LessorController::class);
+}
+);
+
+
+
+
 
 
 //-------------------------------Vehicle Type-------------------------------------------
@@ -323,7 +357,11 @@ Route::group(
             'XSS',
         ],
     ], function () {
+
+    Route::get('rental-agreement/agreement/{id}', [RentalAgreementController::class, 'printSignDocument'])->name('rental_agreement_document');
+
     Route::resource('rental-agreement', RentalAgreementController::class);
+
 });
 
 

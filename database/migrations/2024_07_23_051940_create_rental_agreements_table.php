@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('vehicle')->default(0);
             $table->text('terms_condition')->nullable();
             $table->text('description')->nullable();
+
             $table->string('status')->nullable();
             $table->integer('parent_id')->default(0);
             $table->timestamps();

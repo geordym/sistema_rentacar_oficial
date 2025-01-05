@@ -20,6 +20,39 @@
             <?php echo e(Form::text('model',null,array('class'=>'form-control','placeholder'=>__('Enter model'),'required'=>'required'))); ?>
 
         </div>
+
+        <div class="form-group col-md-6">
+            <?php echo e(Form::label('mark',__('Mark'),array('class'=>'form-label'))); ?>
+
+            <?php echo e(Form::text('mark',null,array('class'=>'form-control','placeholder'=>__('Enter mark'),'required'=>'required'))); ?>
+
+        </div>
+
+        
+        <div class="form-group col-md-6">
+            <?php echo e(Form::label('color',__('Color'),array('class'=>'form-label'))); ?>
+
+            <?php echo e(Form::text('color',null,array('class'=>'form-control','placeholder'=>__('Enter color'),'required'=>'required'))); ?>
+
+        </div>
+
+        <div class="form-group col-md-6">
+            <?php echo e(Form::label('number_doors',__('number_doors'),array('class'=>'form-label'))); ?>
+
+            <?php echo e(Form::text('number_doors',null,array('class'=>'form-control','placeholder'=>__('Enter the number of doors'),'required'=>'required'))); ?>
+
+        </div>
+
+        <div class="form-group col-md-6">
+            <?php echo e(Form::label('state',__('state'),array('class'=>'form-label'))); ?>
+
+            <?php echo e(Form::text('state',null,array('class'=>'form-control','placeholder'=>__('Enter the state'),'required'=>'required'))); ?>
+
+        </div>
+
+
+
+
         <div class="form-group col-md-6">
             <?php echo e(Form::label('engine_type',__('Engine Type'),array('class'=>'form-label'))); ?>
 

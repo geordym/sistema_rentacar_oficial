@@ -16,16 +16,17 @@ return new class extends Migration
         Schema::create('lessors', function (Blueprint $table) {
             $table->id(); 
             $table->string('name'); 
-            $table->string('nationality')->nullable(); // Lessor's nationality (optional)
+            $table->string('nationality'); // Lessor's nationality (optional)
             $table->string('document_type'); // Lessor's document type (e.g., passport, ID)
             $table->string('document_number'); // Lessor's document number (e.g., passport number or ID number)
-            $table->string('address'); // Lessor's address (street address)
-            $table->string('city_municipality')->nullable(); // Lessor's city or municipality (optional)
-            $table->string('license_number')->nullable(); // Lessor's license number (optional, e.g., driver's license)
-            $table->binary('document_image')->nullable(); // Lessor's document image (optional)
-            $table->string('payment_concept')->nullable(); // Payment concept (optional, e.g., rent, services)
-            $table->binary('signature_image')->nullable(); // Lessor's signature image (optional)
-            $table->dateTime('signature_date')->nullable(); // Date when the lessor signed the contract (optional)
+            $table->string('residence_address'); // Lessor's address (street address)
+            $table->string('fiscal_address'); // Lessor's address (street address)
+
+            $table->string('city'); // Lessor's city or municipality (optional)
+
+            $table->string('municipality'); // Lessor's city or municipality (optional)
+            $table->string('license_number'); // Lessor's license number (optional, e.g., driver's license)
+            $table->longText('document_image'); // Lessor's document image (optional)
             $table->timestamps(); // Laravel's created_at and updated_at
         });
     }

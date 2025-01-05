@@ -80,6 +80,26 @@
                 <li class="cdxmenu-title">
                     <h5><?php echo e(__('Business Management')); ?></h5>
                 </li>
+
+                <?php if(Gate::check('manage tenant')): ?>
+                    <li class="menu-item <?php echo e(in_array($routeName,['tenant.index'])?'active':''); ?>">
+                        <a href="<?php echo e(route('tenant.index')); ?>">
+                            <div class="icon-item"><i data-feather="user-check"></i></div>
+                            <span><?php echo e(__('Tenant')); ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if(Gate::check('manage lessor')): ?>
+                    <li class="menu-item <?php echo e(in_array($routeName,['lessor.index'])?'active':''); ?>">
+                        <a href="<?php echo e(route('lessor.index')); ?>">
+                            <div class="icon-item"><i data-feather="user-check"></i></div>
+                            <span><?php echo e(__('Lessor')); ?></span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+
                 <?php if(Gate::check('manage driver')): ?>
                     <li class="menu-item <?php echo e(in_array($routeName,['driver.index'])?'active':''); ?>">
                         <a href="<?php echo e(route('driver.index')); ?>">

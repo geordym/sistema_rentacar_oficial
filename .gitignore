@@ -3,3 +3,6 @@
 /.vscode
 .env
 vendor
+
+storage/framework/views/*
+storage/framework/sessions/*

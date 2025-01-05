@@ -568,5 +568,22 @@
   "Select Pickup Address": "Seleccione la dirección de recogida",
   "Select Drop Off Address": "Seleccione la dirección de entrega",
   "Enter payment amount": "Ingrese el monto del pago",
-  "Method": "Método"
+  "Method": "Método",
+  "Tenant": "Arrendatario",
+  "Lessor": "Arrendador",
+  "Create Tenant": "Crear arrendatario",
+  "payment concept": "Concepto de pago",
+  "Payment amount": "Monto de pago",
+  "ARRENDAMIENTO_CLAUSULA_TERCERA_ARRENDATARIO_PAGO_CONCEPTO": "Concepto de pago del arrendatario",
+  "ARRENDAMIENTO_CLAUSULA_TERCERA_ARRENDATARIO_PAGO_CANTIDAD": "Ingresa el monto de pago del arrendatario",
+  "ARRENDAMIENTO_CLAUSULA_QUINTA_TRANSPORTE_CONCEPTO": "Clausula quinta - Transporte Concepto",
+  "ARRENDAMIENTO_CLAUSULA_QUINTA_TRANSPORTE_DESTINO": "Clausula quinta - Transporte destino",
+  "ARRENDAMIENTO_CLAUSULA_QUINTA_CONDUCTOR": "Clausula quinta - Conductor",
+  "ARRENDAMIENTO_CLAUSULA_QUINTA_LICENCIA_NUMERO": "Clausula quinta - Licencia numero",
+  "ARRENDAMIENTO_FIRMA_CIUDAD": "Clausula quinta - Firma Ciudad",
+  "ARRENDAMIENTO_FIRMA_FECHA": "Clausula quinta - Firma Fecha",
+  "CONTRATO_NUMERO": "Contrato numero",
+  "Print Contract": "Imprimir Contrato",
+  "ARRENDAMIENTO_CLAUSULA_SEGUNDA_CONTRATO_VIGENCIA_DIAS": "Clausula segunda: Vigencia del contrato en dias"
+
 }

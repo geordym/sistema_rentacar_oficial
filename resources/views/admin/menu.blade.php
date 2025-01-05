@@ -80,6 +80,26 @@
                 <li class="cdxmenu-title">
                     <h5>{{__('Business Management')}}</h5>
                 </li>
+
+                @if(Gate::check('manage tenant'))
+                    <li class="menu-item {{in_array($routeName,['tenant.index'])?'active':''}}">
+                        <a href="{{route('tenant.index')}}">
+                            <div class="icon-item"><i data-feather="user-check"></i></div>
+                            <span>{{__('Tenant')}}</span>
+                        </a>
+                    </li>
+                @endif
+
+                @if(Gate::check('manage lessor'))
+                    <li class="menu-item {{in_array($routeName,['lessor.index'])?'active':''}}">
+                        <a href="{{route('lessor.index')}}">
+                            <div class="icon-item"><i data-feather="user-check"></i></div>
+                            <span>{{__('Lessor')}}</span>
+                        </a>
+                    </li>
+                @endif
+
+
                 @if(Gate::check('manage driver'))
                     <li class="menu-item {{in_array($routeName,['driver.index'])?'active':''}}">
                         <a href="{{route('driver.index')}}">
