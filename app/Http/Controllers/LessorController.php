@@ -46,7 +46,7 @@ class LessorController extends Controller
                     'document_number' => 'required|string',
                     'residence_address' => 'required|string',
                     'fiscal_address' => 'required|string',
-                    'document_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+                    'document_image' => 'required|image|mimes:jpeg,png,jpg,gif',
                 ]
             );
     
